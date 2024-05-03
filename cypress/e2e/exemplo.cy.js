@@ -37,10 +37,10 @@ describe('testando mercado livre',() => {
 
   })
 
-  it('teste: testando pagina do mercado play',()=>{
+  it('teste: testando pagina da max',()=>{
     cy.visit('https://www.mercadolivre.com.br/')
-    cy.get(':nth-child(2) > a > img').click()
-    cy.get('.sub-header-desktop__brand > .andes-typography').should('contain.text', 'Mercado Play')
+    cy.get('.andes-carousel-snapped__slide--next > .partners-subscriptions__slide > .partners-subscriptions__slide-link > .partners-subscriptions__slide-background').click()
+    cy.get('h1').should('contain.text', 'Assine a Max')
 
   })
 
