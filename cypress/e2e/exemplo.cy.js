@@ -1,60 +1,48 @@
-describe("testes de criação, registro e login", () => {
-  it("teste criação de usuario com sucesso", () => {
-    cy.visit('https://globalsqa.com/angularJs-protractor/registration-login-example/#/login')
-    cy.get('.btn-link').click()
-    cy.get('#firstName').type("leonardo")
-    cy.get('#Text1').type("junior")
-    cy.get('#username').type("leo")
-    cy.get('#password').type("123")
-    cy.get('.btn-primary').click()
-    cy.get('.ng-binding').should("contain.text", "Registration successful")
+describe('testando mercado livre',() => {
+    
+  it('teste: Pesquisa inexistente',()=>{
+    cy.visit('https://www.mercadolivre.com.br/')
+    cy.get('#cb1-edit').click().type('jksahdk')
+    cy.get('.nav-icon-search').click()
+    cy.get('.ui-search-rescue__title').should('contain.text', 'Não há anúncios que correspondam à sua busca')
+
   })
 
-  it("teste criação de usuario com sucesso", () => {
-    cy.visit('https://globalsqa.com/angularJs-protractor/registration-login-example/#/login')
-    cy.get('.btn-link').click()
-    cy.get('#firstName').type("leonardo")
-    cy.get('#Text1').type("junior")
-    cy.get('#username').type("leo")
-    cy.get('.btn-primary').should("be.disabled")
+  it('teste: Pesquisa existente',()=>{
+    cy.visit('https://www.mercadolivre.com.br/')
+    cy.get('#cb1-edit').click().type('notebook')
+    cy.get('.nav-icon-search').click()
+    cy.get('.ui-search-breadcrumb__title').should('contain.text', 'Notebook')
+
   })
 
-  it("teste de login com sucesso", () => {
-    let infos = criarUser()
-    cy.visit('https://globalsqa.com/angularJs-protractor/registration-login-example/#/login')
-    cy.get('#username').type(infos[0])
-    cy.get('#password').type(infos[1])
-    cy.get('.btn-primary').click()
-    cy.get('h1.ng-binding').should("contain.text", infos[0])
+  it('teste: testando pagina de ofertas',()=>{
+    cy.visit('https://www.mercadolivre.com.br/')
+    cy.get(':nth-child(2) > .nav-menu-item-link').click()
+    cy.get('.andes-carousel-snapped__slide--active > .carousel_item > .title').should('contain.text', 'Todas as ofertas')
+
   })
 
-  it("teste de delete com sucesso", () => {
-    let infos = criarUser()
-    cy.login(infos[0], infos[1])
-    cy.get('h1.ng-binding').should("contain.text", infos[0])
-    cy.get('.ng-binding > a').click()
-    cy.get('.btn').click()
-    cy.login(infos[0], infos[1])
-    cy.get('.ng-binding').should("contain.text", "Username or password is incorrect")
+  it('teste: testando pagina de historico',()=>{
+    cy.visit('https://www.mercadolivre.com.br/')
+    cy.get(':nth-child(3) > .nav-menu-item-link').click()
+    cy.get('.ui-navigation-header__lgpd__title').should('contain.text', 'O seu histórico')
+
   })
+
+  it('teste: testando pagina de supermercado',()=>{
+    cy.visit('https://www.mercadolivre.com.br/')
+    cy.get(':nth-child(4) > .nav-menu-item-link').click()
+    cy.get(':nth-child(2) > .hub__carousel > .carousel__title').should('contain.text', 'Nossas categorias')
+
+  })
+
+  it('teste: testando pagina da max',()=>{
+    cy.visit('https://www.mercadolivre.com.br/')
+    cy.get('.andes-carousel-snapped__slide--next > .partners-subscriptions__slide > .partners-subscriptions__slide-link > .partners-subscriptions__slide-background').click()
+    cy.get('h1').should('contain.text', 'Assine a Max')
+
+  })
+
 
 })
-
-function criarUser(){
-  let hora = new Date().getHours().toString()
-  let minute = new Date().getMinutes().toString()
-  let seg = new Date().getSeconds().toString()
-  let id = hora + minute + seg + "id"
-  let senha = hora + minute + seg + "senha"
-  let infos = [id, senha]
-
-  cy.visit('https://globalsqa.com/angularJs-protractor/registration-login-example/#/login')
-  cy.get('.btn-link').click()
-  cy.get('#firstName').type(id)
-  cy.get('#Text1').type(id)
-  cy.get('#username').type(id)
-  cy.get('#password').type(senha)
-  cy.get('.btn-primary').click()
-  cy.get('.ng-binding').should("contain.text", "Registration successful")
-  return infos
-}
